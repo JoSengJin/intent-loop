@@ -31,19 +31,19 @@ function History({ requests }: { requests: RevisionRequest[] }) {
   );
 }
 
-function Prompt({ targets }: { targets: Criterion[] }) {
-  if (!targets.length) return null;
-  const names = targets.map(c => `C${c.id} "${c.text}"`).join(', ');
-  return <div className="dock-prompt"><b>에이전트</b> {names}에서 무엇이 기대와 달랐나요? 기대한 동작 · 실제 화면 · 원하는 변경을 적어주세요.</div>;
+function placeholderFor(targets: Criterion[], phase: WorkPhase) {
+  if (phase !== 'review') return '개발이 끝나면 수정 지시를 보낼 수 있어요';
+  if (!targets.length) return '예: 이 화면의 여백을 줄이고, 가입 버튼을 누르면 이메일 입력 폼이 열리도록 수정해줘.';
+  const names = targets.map(c => `C${c.id}`).join(', ');
+  return `${names}에서 무엇이 기대와 달랐나요? 기대한 동작 · 실제 화면 · 원하는 변경을 적어주세요.`;
 }
 
-function Attachments({ s, targets }: { s: IntentState; targets: Criterion[] }) {
+function Chips({ s, targets }: { s: IntentState; targets: Criterion[] }) {
   return (
-    <div className="chat-attachments attach-preview">
-      <span className="hint">지시와 함께 에이전트에게 전달</span>
+    <>
       {targets.map(c => <span className="badge red" key={c.id}>수정 대상 · C{c.id} {c.text.slice(0, 14)}</span>)}
-      <span className="badge">보고 있던 화면 · {`localhost:${s.port}${s.previewPath}`}</span>
-    </div>
+      <span className="badge" title="지시와 함께 에이전트에게 전달됩니다">{`localhost:${s.port}${s.previewPath}`}</span>
+    </>
   );
 }
 
@@ -58,17 +58,21 @@ export default function ChatPane({ s, phase, act, focusSignal }: ChatPaneProps) 
   const [draft, setDraft] = useState('');
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
-  const dockRef = useRef<HTMLElement>(null);
   const targets = s.criteria.filter(c => c.status === 'fix');
   const canSend = Boolean(draft.trim()) && phase === 'review';
   useEffect(() => { if (focusSignal) inputRef.current?.focus(); }, [focusSignal]);
+  useEffect(() => {
+    const input = inputRef.current;
+    if (!input) return;
+    input.style.height = 'auto';
+    if (draft) input.style.height = `${Math.min(input.scrollHeight, 140)}px`;
+  }, [draft]);
 
   const send = () => {
     if (!canSend) return;
     act(submitRevision, draft);
     setDraft('');
     setOpen(true);
-    dockRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
   };
   const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return;
@@ -77,26 +81,25 @@ export default function ChatPane({ s, phase, act, focusSignal }: ChatPaneProps) 
   };
 
   return (
-    <section className="chat-dock" ref={dockRef}>
+    <section className="chat-dock">
       {open && s.requests.length > 0 && <History requests={s.requests} />}
-      <div className="dock-top">
-        <span className="loop-guide">확인 → <b>수정 필요</b> → 지시 → 재개발 → 재확인</span>
-        {s.requests.length > 0 && <button className="button ghost small" onClick={() => setOpen(v => !v)}>{open ? '대화 기록 접기' : `대화 기록 ${s.requests.length}`}</button>}
+      <div className="dock-chips">
+        <Chips s={s} targets={targets} />
+        <span className="dock-keys">Enter 전송 · Shift+Enter 줄바꿈</span>
+        {s.requests.length > 0 && <button className="button ghost small" onClick={() => setOpen(v => !v)}>{open ? '기록 접기' : `기록 ${s.requests.length}`}</button>}
       </div>
-      <Prompt targets={targets} />
-      <Attachments s={s} targets={targets} />
       <div className="dock-row">
         <textarea
           ref={inputRef}
           className="textarea"
+          rows={1}
           value={draft}
           onChange={e => setDraft(e.target.value)}
           onKeyDown={onKeyDown}
-          placeholder="예: 이 화면의 여백을 줄이고, 가입 버튼을 누르면 이메일 입력 폼이 열리도록 수정해줘."
+          placeholder={placeholderFor(targets, phase)}
         />
-        <button className="button primary" disabled={!canSend} onClick={send}>개발 지시 보내기 →</button>
+        <button className="button primary" disabled={!canSend} onClick={send}>보내기 →</button>
       </div>
-      <span className="hint">Enter 전송 · Shift+Enter 줄바꿈{phase !== 'review' ? ' · 개발이 끝나면 보낼 수 있어요' : ''}</span>
     </section>
   );
 }

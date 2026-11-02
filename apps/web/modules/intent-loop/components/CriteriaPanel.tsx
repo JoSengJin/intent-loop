@@ -42,24 +42,28 @@ function CriterionCard({ c, selected, disabled, act, onFix }: CriterionCardProps
     if (status === 'fix') onFix();
   };
   return (
-    <div className={`review-card ${selected ? 'selected' : ''}`} onClick={() => act(selectCriterion, c.id)}>
-      <div className="review-card-head">
-        <span className="badge">C{c.id}</span>
-        <span className={`badge ${badgeClass[c.status]}`}>{statusNames[c.status]}</span>
+    <div className={`crit ${selected ? 'selected' : ''}`} onClick={() => act(selectCriterion, c.id)}>
+      <div className="crit-row">
+        <span className={`crit-dot ${c.status}`} aria-hidden="true" />
+        <span className="crit-text">{c.text}</span>
+        <span className={`badge ${badgeClass[c.status]}`}>{c.status === 'unchecked' ? `C${c.id}` : statusNames[c.status]}</span>
       </div>
-      <h3>{c.text}</h3>
-      <p>확인 위치·상태: {c.location || '—'}</p>
-      {c.revisit && <div className="assumption">{c.status === 'pass' ? '수정 이후 재확인 권장' : '다시 확인'}</div>}
-      <Choices c={c} disabled={disabled} onChoose={choose} />
-      {c.status === 'unverifiable' && (
-        <input
-          className="text-input reason-input"
-          aria-label={`C${c.id} 확인 불가 사유`}
-          value={c.reason}
-          onClick={e => e.stopPropagation()}
-          onChange={e => act(patchCriterion, c.id, { reason: e.target.value })}
-          placeholder="확인 불가 사유를 적어주세요"
-        />
+      {selected && (
+        <div className="crit-detail">
+          <p>확인 위치·상태: {c.location || '—'}</p>
+          {c.revisit && <div className="assumption">{c.status === 'pass' ? '수정 이후 재확인 권장' : '다시 확인'}</div>}
+          <Choices c={c} disabled={disabled} onChoose={choose} />
+          {c.status === 'unverifiable' && (
+            <input
+              className="text-input reason-input"
+              aria-label={`C${c.id} 확인 불가 사유`}
+              value={c.reason}
+              onClick={e => e.stopPropagation()}
+              onChange={e => act(patchCriterion, c.id, { reason: e.target.value })}
+              placeholder="확인 불가 사유를 적어주세요"
+            />
+          )}
+        </div>
       )}
     </div>
   );
@@ -75,12 +79,15 @@ interface CriteriaPanelProps {
 
 export default function CriteriaPanel({ s, summary, phase, act, onFix }: CriteriaPanelProps) {
   const disabled = phase !== 'review';
+  const active = s.criteria.some(c => c.id === s.selected) ? s.selected : s.criteria[0]?.id;
+  const percent = s.criteria.length ? Math.round((summary.pass / s.criteria.length) * 100) : 0;
   return (
     <aside className="wb-side wb-criteria">
       <div className="card-title">완료 기준 <span className="badge">{summary.pass}/{s.criteria.length} 통과</span></div>
+      <div className="crit-progress" aria-hidden="true"><div style={{ width: `${percent}%` }} /></div>
       {disabled && <p className="hint">앱 미리보기가 준비되면 기준을 확인할 수 있어요.</p>}
       <div className="review-list">
-        {s.criteria.map(c => <CriterionCard key={c.id} c={c} selected={s.selected === c.id} disabled={disabled} act={act} onFix={onFix} />)}
+        {s.criteria.map(c => <CriterionCard key={c.id} c={c} selected={active === c.id} disabled={disabled} act={act} onFix={onFix} />)}
       </div>
       {s.unknown.trim() && <div className="assumption"><b>미정 사항 (임시 가정)</b><br />{s.unknown}</div>}
     </aside>

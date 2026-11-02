@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
+import '~/styles/theme.css';
 import '~/styles/globals.css';
 import '~/styles/revision.css';
 import '~/styles/workbench.css';
