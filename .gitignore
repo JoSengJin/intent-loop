@@ -2,3 +2,4 @@ node_modules
 .next
 out
 apps/web/AGENTS.md
+*.tsbuildinfo
