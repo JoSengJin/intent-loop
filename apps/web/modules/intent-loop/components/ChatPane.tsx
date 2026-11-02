@@ -4,8 +4,13 @@ import { submitRevision } from '@intent-loop/features/intent-loop/revision';
 import type { Act, Criterion, IntentState, RevisionRequest, WorkPhase } from '@intent-loop/features/intent-loop/types';
 
 function History({ requests }: { requests: RevisionRequest[] }) {
+  const listRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const list = listRef.current;
+    if (list) list.scrollTop = list.scrollHeight;
+  }, [requests.length]);
   return (
-    <div className="chat-history dock-history">
+    <div className="chat-history dock-history" ref={listRef}>
       {requests.map(request => (
         <div key={request.round}>
           <div className="chat-message user-message">
@@ -53,6 +58,7 @@ export default function ChatPane({ s, phase, act, focusSignal }: ChatPaneProps) 
   const [draft, setDraft] = useState('');
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const dockRef = useRef<HTMLElement>(null);
   const targets = s.criteria.filter(c => c.status === 'fix');
   const canSend = Boolean(draft.trim()) && phase === 'review';
   useEffect(() => { if (focusSignal) inputRef.current?.focus(); }, [focusSignal]);
@@ -62,6 +68,7 @@ export default function ChatPane({ s, phase, act, focusSignal }: ChatPaneProps) 
     act(submitRevision, draft);
     setDraft('');
     setOpen(true);
+    dockRef.current?.scrollIntoView({ block: 'end', behavior: 'smooth' });
   };
   const onKeyDown = (e: KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return;
@@ -70,7 +77,7 @@ export default function ChatPane({ s, phase, act, focusSignal }: ChatPaneProps) 
   };
 
   return (
-    <section className="chat-dock">
+    <section className="chat-dock" ref={dockRef}>
       {open && s.requests.length > 0 && <History requests={s.requests} />}
       <div className="dock-top">
         <span className="loop-guide">확인 → <b>수정 필요</b> → 지시 → 재개발 → 재확인</span>
