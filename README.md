@@ -1,6 +1,6 @@
 # Intent Loop 프로토타입
 
-Intent를 작성하고 목 에이전트 개발, 샘플 앱 검토, 수정 요청, 종료를 7단계로 확인하는 Next.js 프로토타입입니다.
+Intent를 작성하고 목 에이전트 개발, 샘플 앱 검토, 수정 요청, 종료를 4단계로 확인하는 Next.js 프로토타입입니다.
 
 ## 실행
 
@@ -13,9 +13,15 @@ npm run dev
 
 ## 구조
 
-- `apps/web`: Cal.diy의 `apps/web` 배치를 따른 Next.js App Router 웹 앱
-- `apps/web/src/features/intent-loop`: 이 작업의 화면과 상태 모델
-- 루트 npm workspace: 앱을 실행하는 최소 모노레포 구성
+Cal.diy의 레이어 배치를 따릅니다.
+
+- `apps/web/app`: App Router 라우트 (얇게 유지, 화면은 `modules`에서 가져옴)
+- `apps/web/modules/intent-loop`: 화면(`components`), 훅(`hooks`), 브라우저 전용 유틸(`lib`)
+- `apps/web/styles`: 전역·화면 스타일
+- `packages/features/intent-loop`: 상태 모델과 순수 상태 전이 (`@intent-loop/features`, barrel 없이 파일 직접 import)
+- 루트 npm workspace: `apps/*`, `packages/*`
+
+작업 흐름은 프로젝트 설정 → Intent 작성 → 개발·검토 루프(Workbench) → 종료 4단계입니다.
 
 Cal.diy의 Next.js 웹 앱과 앱 단위 모노레포 구조를 참고했습니다. 프로토타입 범위에 필요 없는 tRPC, Prisma, 인증, 데이터베이스는 추가하지 않았습니다.
 
