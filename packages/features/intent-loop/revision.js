@@ -1,4 +1,5 @@
-import { parseIntentMarkdown, withRevision } from './intent-markdown';
+import { withRevision } from './intent-markdown';
+import { parseIntentMarkdown } from './intent-parser';
 
 export function startBuild(state) {
   return { ...state, step: 3, run: 'running', preview: 'idle', virtualIntent: undefined, intentSynced: true };
