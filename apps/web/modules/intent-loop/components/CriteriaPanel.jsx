@@ -58,7 +58,7 @@ export default function CriteriaPanel({ s, summary, phase, act, onFix }) {
       <div className="review-list">
         {s.criteria.map(c => <CriterionCard key={c.id} c={c} selected={s.selected === c.id} disabled={disabled} act={act} onFix={onFix} />)}
       </div>
-      {s.unknown.trim() && <div className="assumption">에이전트가 이렇게 가정했어요: {s.unknown}</div>}
+      {s.unknown.trim() && <div className="assumption"><b>미정 사항 (임시 가정)</b><br />{s.unknown}</div>}
     </aside>
   );
 }

@@ -4,7 +4,7 @@ import { submitRevision } from '@intent-loop/features/intent-loop/revision';
 function History({ s, targets }) {
   if (!s.requests.length) {
     const text = targets.length
-      ? '수정이 필요한 기준을 확인했습니다. 기대한 동작과 실제 화면, 원하는 변경을 편하게 적어주세요.'
+      ? `${targets.map(c => `C${c.id} "${c.text}"`).join(', ')}에서 무엇이 기대와 달랐나요?\n기대한 동작 · 실제로 보이는 화면 · 원하는 변경을 적어주세요.`
       : '화면이나 동작을 자연어로 요청하면 개발 문서에 반영해 다음 작업에 전달합니다.';
     return <div className="chat-history"><div className="chat-message agent-message"><small>에이전트</small><p>{text}</p></div></div>;
   }
@@ -33,9 +33,9 @@ function History({ s, targets }) {
 function Attachments({ s, targets }) {
   return (
     <div className="chat-attachments attach-preview">
-      <span className="hint">함께 전달돼요</span>
-      {targets.map(c => <span className="badge red" key={c.id}>C{c.id} · {c.text.slice(0, 18)}</span>)}
-      <span className="badge">{`http://localhost:${s.port}${s.previewPath}`}</span>
+      <span className="hint">지시와 함께 에이전트에게 전달</span>
+      {targets.map(c => <span className="badge red" key={c.id}>수정 대상 · C{c.id} {c.text.slice(0, 14)}</span>)}
+      <span className="badge">보고 있던 화면 · {`localhost:${s.port}${s.previewPath}`}</span>
     </div>
   );
 }
@@ -60,6 +60,7 @@ export default function ChatPane({ s, phase, act, focusSignal }) {
 
   return (
     <section className="chat-pane">
+      <p className="loop-guide">확인 → <b>수정 필요</b> → 지시 → 재개발 → 재확인</p>
       <History s={s} targets={targets} />
       <Attachments s={s} targets={targets} />
       <textarea

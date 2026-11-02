@@ -51,3 +51,6 @@
   .wb-side { position: static; max-height: none; }
   .content.content-wide { padding: 16px 14px 40px; }
 }
+
+.loop-guide { margin: 0 0 12px; padding: 8px 10px; border-radius: 7px; background: #f1f7eb; color: #52703f; font-size: 11px; }
+.chat-message p { white-space: pre-wrap; }
