@@ -54,3 +54,16 @@
 
 .loop-guide { margin: 0 0 12px; padding: 8px 10px; border-radius: 7px; background: #f1f7eb; color: #52703f; font-size: 11px; }
 .chat-message p { white-space: pre-wrap; }
+
+/* 하단 고정 바이브코딩 입력창 */
+.wb-side { max-height: calc(100vh - 300px); }
+.chat-dock { position: sticky; bottom: 0; z-index: 5; margin-top: 16px; padding: 12px 16px 10px; background: #fff; border: 1px solid #dfe6e6; border-radius: 12px; box-shadow: 0 -6px 24px rgba(29, 55, 64, .08); }
+.dock-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 8px; }
+.dock-top .loop-guide { margin: 0; }
+.dock-history { max-height: 220px; margin: 0 0 10px; padding-bottom: 10px; border-bottom: 1px solid #edf1f1; }
+.dock-prompt { margin-bottom: 8px; padding: 9px 11px; border-radius: 8px; background: #f3f6f6; color: #40565d; font-size: 12px; line-height: 1.6; }
+.dock-row { display: flex; gap: 12px; align-items: flex-end; }
+.dock-row .textarea { min-height: 64px; max-height: 140px; flex: 1; }
+.chat-dock > .hint { display: block; margin: 6px 0 0; }
+.attach-preview { margin-bottom: 8px; }
+@media (max-width: 1280px) { .wb-side.wb-right { max-height: none; } }

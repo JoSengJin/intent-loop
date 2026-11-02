@@ -20,33 +20,23 @@ function WorkbenchBar({ s, phase, summary, update }) {
   );
 }
 
-function SideTabs({ tab, onTab }) {
-  return (
-    <div className="sub-tabs">
-      <button className={tab === 'chat' ? 'active' : ''} onClick={() => onTab('chat')}>바이브코딩 대화</button>
-      <button className={tab === 'intent' ? 'active' : ''} onClick={() => onTab('intent')}>가상 intent.md</button>
-    </div>
-  );
-}
-
 export default function Workbench({ s, update, act }) {
-  const [tab, setTab] = useState('intent');
   const [focusSignal, setFocusSignal] = useState(0);
   const phase = workPhase(s);
   const summary = counts(s.criteria);
-  const openChat = () => { setTab('chat'); setFocusSignal(n => n + 1); };
+  const focusChat = () => setFocusSignal(n => n + 1);
   return (
     <div className="workbench">
       <WorkbenchBar s={s} phase={phase} summary={summary} update={update} />
       <div className="wb-grid">
-        <CriteriaPanel s={s} summary={summary} phase={phase} act={act} onFix={openChat} />
+        <CriteriaPanel s={s} summary={summary} phase={phase} act={act} onFix={focusChat} />
         <PreviewPane s={s} phase={phase} update={update} act={act} />
         <aside className="wb-side wb-right">
-          <SideTabs tab={tab} onTab={setTab} />
-          <div className={tab === 'chat' ? '' : 'hidden'}><ChatPane s={s} phase={phase} act={act} focusSignal={focusSignal} /></div>
-          <div className={tab === 'intent' ? '' : 'hidden'}><IntentPane s={s} act={act} /></div>
+          <div className="card-title">가상 intent.md <span className="badge">개발 기준</span></div>
+          <IntentPane s={s} act={act} />
         </aside>
       </div>
+      <ChatPane s={s} phase={phase} act={act} focusSignal={focusSignal} />
     </div>
   );
 }

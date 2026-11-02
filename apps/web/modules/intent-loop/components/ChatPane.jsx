@@ -1,19 +1,13 @@
 import { useEffect, useRef, useState } from 'react';
 import { submitRevision } from '@intent-loop/features/intent-loop/revision';
 
-function History({ s, targets }) {
-  if (!s.requests.length) {
-    const text = targets.length
-      ? `${targets.map(c => `C${c.id} "${c.text}"`).join(', ')}에서 무엇이 기대와 달랐나요?\n기대한 동작 · 실제로 보이는 화면 · 원하는 변경을 적어주세요.`
-      : '화면이나 동작을 자연어로 요청하면 개발 문서에 반영해 다음 작업에 전달합니다.';
-    return <div className="chat-history"><div className="chat-message agent-message"><small>에이전트</small><p>{text}</p></div></div>;
-  }
+function History({ requests }) {
   return (
-    <div className="chat-history">
-      {s.requests.map(request => (
+    <div className="chat-history dock-history">
+      {requests.map(request => (
         <div key={request.round}>
           <div className="chat-message user-message">
-            <small>나 · {request.sentAt}</small>
+            <small>나 · Round {request.round} · {request.sentAt}</small>
             <p>{request.message}</p>
             <div className="chat-attachments">
               {request.items.map(item => <span className="badge" key={item.id}>C{item.id} · 수정 대상</span>)}
@@ -30,6 +24,12 @@ function History({ s, targets }) {
   );
 }
 
+function Prompt({ targets }) {
+  if (!targets.length) return null;
+  const names = targets.map(c => `C${c.id} "${c.text}"`).join(', ');
+  return <div className="dock-prompt"><b>에이전트</b> {names}에서 무엇이 기대와 달랐나요? 기대한 동작 · 실제 화면 · 원하는 변경을 적어주세요.</div>;
+}
+
 function Attachments({ s, targets }) {
   return (
     <div className="chat-attachments attach-preview">
@@ -42,6 +42,7 @@ function Attachments({ s, targets }) {
 
 export default function ChatPane({ s, phase, act, focusSignal }) {
   const [draft, setDraft] = useState('');
+  const [open, setOpen] = useState(false);
   const inputRef = useRef(null);
   const targets = s.criteria.filter(c => c.status === 'fix');
   const canSend = Boolean(draft.trim()) && phase === 'review';
@@ -51,6 +52,7 @@ export default function ChatPane({ s, phase, act, focusSignal }) {
     if (!canSend) return;
     act(submitRevision, draft);
     setDraft('');
+    setOpen(true);
   };
   const onKeyDown = e => {
     if (e.key !== 'Enter' || e.shiftKey || e.nativeEvent.isComposing) return;
@@ -59,20 +61,26 @@ export default function ChatPane({ s, phase, act, focusSignal }) {
   };
 
   return (
-    <section className="chat-pane">
-      <p className="loop-guide">확인 → <b>수정 필요</b> → 지시 → 재개발 → 재확인</p>
-      <History s={s} targets={targets} />
+    <section className="chat-dock">
+      {open && s.requests.length > 0 && <History requests={s.requests} />}
+      <div className="dock-top">
+        <span className="loop-guide">확인 → <b>수정 필요</b> → 지시 → 재개발 → 재확인</span>
+        {s.requests.length > 0 && <button className="button ghost small" onClick={() => setOpen(v => !v)}>{open ? '대화 기록 접기' : `대화 기록 ${s.requests.length}`}</button>}
+      </div>
+      <Prompt targets={targets} />
       <Attachments s={s} targets={targets} />
-      <textarea
-        ref={inputRef}
-        className="textarea"
-        value={draft}
-        onChange={e => setDraft(e.target.value)}
-        onKeyDown={onKeyDown}
-        placeholder="예: 이 화면의 여백을 줄이고, 가입 버튼을 누르면 이메일 입력 폼이 열리도록 수정해줘."
-      />
+      <div className="dock-row">
+        <textarea
+          ref={inputRef}
+          className="textarea"
+          value={draft}
+          onChange={e => setDraft(e.target.value)}
+          onKeyDown={onKeyDown}
+          placeholder="예: 이 화면의 여백을 줄이고, 가입 버튼을 누르면 이메일 입력 폼이 열리도록 수정해줘."
+        />
+        <button className="button primary" disabled={!canSend} onClick={send}>개발 지시 보내기 →</button>
+      </div>
       <span className="hint">Enter 전송 · Shift+Enter 줄바꿈{phase !== 'review' ? ' · 개발이 끝나면 보낼 수 있어요' : ''}</span>
-      <div className="action-right"><button className="button primary" disabled={!canSend} onClick={send}>개발 지시 보내기 →</button></div>
     </section>
   );
 }
