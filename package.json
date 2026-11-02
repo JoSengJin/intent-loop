@@ -1,0 +1,7 @@
+{
+  "name": "intent-loop",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": ["apps/*"],
+  "scripts": {"dev": "npm run dev --workspace @intent-loop/web", "build": "npm run build --workspace @intent-loop/web", "start": "npm run start --workspace @intent-loop/web"}
+}
