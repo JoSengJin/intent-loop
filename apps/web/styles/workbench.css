@@ -1,0 +1,53 @@
+/* 개발·검토 루프(Workbench) 화면 */
+.content.content-wide { max-width: none; padding: 20px 24px 40px; }
+
+.wb-bar { display: flex; justify-content: space-between; align-items: center; gap: 16px; margin-bottom: 16px; padding: 12px 16px; background: #fff; border: 1px solid #e5e9e9; border-radius: 12px; }
+.wb-title { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; font-size: 13px; }
+.wb-counts { color: #8a9a9f; font-size: 11px; }
+
+.wb-grid { display: grid; grid-template-columns: 270px minmax(0, 1fr) 380px; gap: 16px; align-items: start; }
+.wb-side { position: sticky; top: 16px; max-height: calc(100vh - 110px); overflow: auto; background: #fff; border: 1px solid #e5e9e9; border-radius: 12px; padding: 18px; }
+.wb-criteria .card-title { margin-bottom: 12px; }
+.wb-criteria .review-card { cursor: pointer; padding: 14px; }
+.wb-criteria .review-card h3 { margin: 8px 0 4px; }
+
+.preview-pane .preview-body { min-height: 560px; }
+.run-status .run-controls { margin-top: 12px; }
+.run-log { margin-top: 14px; }
+.run-log summary { cursor: pointer; font-size: 11px; font-weight: 800; color: #6d8488; padding: 6px 0; }
+
+.sub-tabs { display: flex; gap: 4px; margin-bottom: 14px; padding: 3px; background: #f1f4f4; border-radius: 9px; }
+.sub-tabs button { flex: 1; border: 0; background: transparent; padding: 8px 10px; border-radius: 7px; font-size: 11px; font-weight: 800; color: #7a8d92; }
+.sub-tabs button.active { background: #fff; color: #2b4048; box-shadow: 0 1px 3px rgba(29, 55, 64, .1); }
+
+.chat-pane .chat-history { max-height: 340px; }
+.attach-preview { align-items: center; margin: 0 0 10px; }
+.attach-preview .hint { margin: 0; }
+.chat-pane .textarea { min-height: 96px; }
+.chat-pane .hint { display: block; margin: 8px 0 12px; }
+
+.intent-editor { min-height: 420px; max-height: 60vh; overflow-y: auto; white-space: pre; font-family: Consolas, monospace; font-size: 11px; background: #172f39; color: #c5d7d7; line-height: 1.7; }
+.intent-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+
+.intent-summary { display: grid; gap: 14px; }
+.sum-block h4 { margin: 0 0 6px; font-size: 11px; letter-spacing: .6px; color: #82a632; }
+.sum-text { margin: 0; font-size: 12px; line-height: 1.7; color: #33484f; white-space: pre-wrap; }
+.sum-empty { margin: 0; font-size: 12px; color: #aab7ba; font-style: italic; }
+.sum-scope { display: grid; grid-template-columns: 78px 1fr; gap: 8px; align-items: start; margin-bottom: 6px; }
+.sum-criterion { display: flex; gap: 8px; font-size: 12px; line-height: 1.6; padding: 4px 0; color: #40565d; }
+.sum-mark { width: 16px; flex: none; font-weight: 800; color: #9aa9ad; }
+.sum-criterion.pass .sum-mark { color: #568047; }
+.sum-criterion.fix .sum-mark { color: #ad5f54; }
+.sum-criterion.unverifiable .sum-mark { color: #987534; }
+
+.round-chip { margin: 14px 10px 0; display: inline-block; align-self: flex-start; padding: 5px 9px; border-radius: 6px; background: #294551; color: #d6ed60; font-size: 11px; font-weight: 800; }
+
+@media (max-width: 1280px) {
+  .wb-grid { grid-template-columns: 250px minmax(0, 1fr); }
+  .wb-right { grid-column: 1 / -1; position: static; max-height: none; }
+}
+@media (max-width: 800px) {
+  .wb-grid { grid-template-columns: 1fr; }
+  .wb-side { position: static; max-height: none; }
+  .content.content-wide { padding: 16px 14px 40px; }
+}
