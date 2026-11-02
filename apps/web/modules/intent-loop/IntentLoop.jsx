@@ -1,8 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { counts, detectPackage, initialState, intentMarkdown, steps } from './model';
-import './revision.css';
+import { counts, detectPackage, initialState, intentMarkdown, steps } from '@intent-loop/features/intent-loop/model';
 
 const key = 'intent-loop-prototype-v1';
 const vagueWords = /깔끔하게|빠르게|좋게|예쁘게|사용하기 쉽게|직관적으로/;
