@@ -1,17 +1,20 @@
 import { useState } from 'react';
 import { intentMarkdown } from '@intent-loop/features/intent-loop/intent-markdown';
 import { applyIntentDocument } from '@intent-loop/features/intent-loop/revision';
+import { parseIntentMarkdown } from '@intent-loop/features/intent-loop/intent-parser';
 import type { Act, IntentState } from '@intent-loop/features/intent-loop/types';
 import { downloadIntent } from '../lib/download-intent';
 import IntentSummary from './IntentSummary';
 
-function RawEditor({ s, act }: { s: IntentState; act: Act }) {
+function RawEditor({ s, act, onApplied }: { s: IntentState; act: Act; onApplied: () => void }) {
   const [draft, setDraft] = useState<string | null>(null);
   const markdown = intentMarkdown(s);
   const apply = () => {
     if (draft === null) return;
+    const readable = parseIntentMarkdown(draft, s) !== null;
     act(applyIntentDocument, draft);
     setDraft(null);
+    if (readable) onApplied();
   };
   return (
     <div>
@@ -28,7 +31,7 @@ function RawEditor({ s, act }: { s: IntentState; act: Act }) {
   );
 }
 
-export default function IntentPane({ s, act }: { s: IntentState; act: Act }) {
+export default function IntentPane({ s, act, onApplied }: { s: IntentState; act: Act; onApplied: () => void }) {
   const [view, setView] = useState<'summary' | 'raw'>('summary');
   return (
     <section className="intent-pane">
@@ -37,7 +40,7 @@ export default function IntentPane({ s, act }: { s: IntentState; act: Act }) {
         <button className={view === 'raw' ? 'active' : ''} onClick={() => setView('raw')}>원문 편집</button>
       </div>
       <div className={view === 'summary' ? '' : 'hidden'}><IntentSummary s={s} /></div>
-      <div className={view === 'raw' ? '' : 'hidden'}><RawEditor s={s} act={act} /></div>
+      <div className={view === 'raw' ? '' : 'hidden'}><RawEditor s={s} act={act} onApplied={onApplied} /></div>
     </section>
   );
 }

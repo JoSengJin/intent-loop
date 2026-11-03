@@ -33,19 +33,17 @@ function WorkbenchBar({ s, phase, update, onIntent }: WorkbenchBarProps) {
 }
 
 export default function Workbench({ s, update, act }: ViewProps) {
-  const [focusSignal, setFocusSignal] = useState(0);
   const [intentOpen, setIntentOpen] = useState(false);
   const phase = workPhase(s);
   const summary = counts(s.criteria);
-  const focusChat = () => setFocusSignal(n => n + 1);
   return (
     <div className="workbench">
       <WorkbenchBar s={s} phase={phase} update={update} onIntent={() => setIntentOpen(true)} />
       <div className="wb-grid">
-        <CriteriaPanel s={s} summary={summary} phase={phase} act={act} onFix={focusChat} />
+        <CriteriaPanel s={s} summary={summary} phase={phase} act={act} onFix={() => setIntentOpen(true)} />
         <PreviewPane s={s} phase={phase} update={update} act={act} />
       </div>
-      <ChatPane s={s} phase={phase} act={act} focusSignal={focusSignal} />
+      <ChatPane s={s} phase={phase} act={act} />
       <IntentDrawer s={s} act={act} open={intentOpen} onClose={() => setIntentOpen(false)} />
     </div>
   );

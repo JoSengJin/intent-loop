@@ -51,16 +51,14 @@ interface ChatPaneProps {
   s: IntentState;
   phase: WorkPhase;
   act: Act;
-  focusSignal: number;
 }
 
-export default function ChatPane({ s, phase, act, focusSignal }: ChatPaneProps) {
+export default function ChatPane({ s, phase, act }: ChatPaneProps) {
   const [draft, setDraft] = useState('');
   const [open, setOpen] = useState(false);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const targets = s.criteria.filter(c => c.status === 'fix');
   const canSend = Boolean(draft.trim()) && phase === 'review';
-  useEffect(() => { if (focusSignal) inputRef.current?.focus(); }, [focusSignal]);
   useEffect(() => {
     const input = inputRef.current;
     if (!input) return;

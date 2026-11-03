@@ -6,53 +6,53 @@
 .wb-title, .wb-actions { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
 
 .wb-grid { display: grid; grid-template-columns: 260px minmax(0, 1fr); gap: 16px; flex: 1; min-height: 0; }
-.wb-side { overflow: auto; background: #fff; border: 1px solid #e5e9e9; border-radius: 12px; padding: 16px; }
+.wb-side { overflow: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
 .wb-criteria .card-title { margin-bottom: 10px; font-size: 14px; }
 .preview-pane, .run-status { min-width: 0; overflow: auto; }
 .preview-pane .preview-body { min-height: 420px; }
 .run-status .run-controls { margin-top: 12px; }
 .run-log { margin-top: 14px; }
-.run-log summary { cursor: pointer; font-size: 11px; font-weight: 800; color: #6d8488; padding: 6px 0; }
+.run-log summary { cursor: pointer; font-size: 11px; font-weight: 800; color: var(--text-muted); padding: 6px 0; }
 
 /* 완료 기준: 한 줄 목록, 선택한 기준만 펼침 */
-.crit-progress { height: 4px; margin-bottom: 12px; border-radius: 2px; background: #edf1f1; }
+.crit-progress { height: 4px; margin-bottom: 12px; border-radius: 2px; background: var(--surface-muted); }
 .crit-progress div { height: 100%; border-radius: 2px; background: #6fa05a; transition: width .2s; }
 .wb-criteria .review-list { gap: 6px; }
 .crit { cursor: pointer; padding: 10px; border: 1px solid transparent; border-radius: 9px; }
-.crit:hover { background: #f6f8f8; }
-.crit.selected { background: #fff; border-color: var(--accent-line); box-shadow: 0 0 0 2px var(--accent-soft); }
+.crit:hover { background: var(--bg); }
+.crit.selected { background: var(--surface); border-color: var(--accent-line); box-shadow: 0 0 0 2px var(--accent-soft); }
 .crit-row { display: flex; align-items: flex-start; gap: 8px; }
-.crit-text { flex: 1; font-size: 12px; line-height: 1.5; color: #2b444d; word-break: keep-all; }
+.crit-text { flex: 1; font-size: 12px; line-height: 1.5; color: var(--text); word-break: keep-all; }
 .crit-dot { flex: none; width: 8px; height: 8px; margin-top: 5px; border-radius: 50%; background: #c9d3d5; }
 .crit-dot.pass { background: #6fa05a; }
 .crit-dot.fix { background: #d4695c; }
 .crit-dot.unverifiable { background: #d9a53f; }
-.crit-detail p { margin: 10px 0 0; font-size: 11px; color: #86989e; line-height: 1.6; }
+.crit-detail p { margin: 10px 0 0; font-size: 11px; color: var(--text-muted); line-height: 1.6; }
 .crit-detail .review-options { margin-top: 10px; }
 .crit-detail .choice { flex: 1; }
 
 /* intent.md 드로어 */
 .drawer-scrim { position: fixed; inset: 0; z-index: 20; background: rgba(20, 43, 54, .32); opacity: 0; visibility: hidden; transition: opacity .18s; }
 .drawer-scrim.open { opacity: 1; visibility: visible; }
-.intent-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 21; width: min(460px, 100vw); padding: 18px; overflow: auto; background: #fff; box-shadow: -12px 0 32px rgba(29, 55, 64, .14); transform: translateX(100%); visibility: hidden; transition: transform .2s, visibility .2s; }
+.intent-drawer { position: fixed; top: 0; right: 0; bottom: 0; z-index: 21; width: min(460px, 100vw); padding: 18px; overflow: auto; background: var(--surface); box-shadow: -12px 0 32px rgba(29, 55, 64, .14); transform: translateX(100%); visibility: hidden; transition: transform .2s, visibility .2s; }
 .intent-drawer.open { transform: none; visibility: visible; }
 .drawer-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; font-size: 15px; }
 .drawer-head .button { margin-left: auto; }
 
-.sub-tabs { display: flex; gap: 4px; margin-bottom: 14px; padding: 3px; background: #f1f4f4; border-radius: 9px; }
-.sub-tabs button { flex: 1; border: 0; background: transparent; padding: 8px 10px; border-radius: 7px; font-size: 11px; font-weight: 800; color: #7a8d92; }
-.sub-tabs button.active { background: #fff; color: #2b4048; box-shadow: 0 1px 3px rgba(29, 55, 64, .1); }
+.sub-tabs { display: flex; gap: 4px; margin-bottom: 14px; padding: 3px; background: var(--surface-muted); border-radius: 9px; }
+.sub-tabs button { flex: 1; border: 0; background: transparent; padding: 8px 10px; border-radius: 7px; font-size: 11px; font-weight: 800; color: var(--text-muted); }
+.sub-tabs button.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(29, 55, 64, .1); }
 
 .intent-editor { min-height: 420px; max-height: 60vh; overflow-y: auto; white-space: pre; font-family: Consolas, monospace; font-size: 11px; background: #172f39; color: #c5d7d7; line-height: 1.7; }
 .intent-actions { display: flex; align-items: center; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
 
 .intent-summary { display: grid; gap: 14px; }
 .sum-block h4 { margin: 0 0 6px; font-size: 11px; letter-spacing: .6px; color: var(--accent-ink); }
-.sum-text { margin: 0; font-size: 12px; line-height: 1.7; color: #33484f; white-space: pre-wrap; }
-.sum-empty { margin: 0; font-size: 12px; color: #aab7ba; font-style: italic; }
+.sum-text { margin: 0; font-size: 12px; line-height: 1.7; color: var(--text); white-space: pre-wrap; }
+.sum-empty { margin: 0; font-size: 12px; color: var(--text-muted); font-style: italic; }
 .sum-scope { display: grid; grid-template-columns: 78px 1fr; gap: 8px; align-items: start; margin-bottom: 6px; }
-.sum-criterion { display: flex; gap: 8px; font-size: 12px; line-height: 1.6; padding: 4px 0; color: #40565d; }
-.sum-mark { width: 16px; flex: none; font-weight: 800; color: #9aa9ad; }
+.sum-criterion { display: flex; gap: 8px; font-size: 12px; line-height: 1.6; padding: 4px 0; color: var(--text-soft); }
+.sum-mark { width: 16px; flex: none; font-weight: 800; color: var(--text-muted); }
 .sum-criterion.pass .sum-mark { color: #568047; }
 .sum-criterion.fix .sum-mark { color: #ad5f54; }
 .sum-criterion.unverifiable .sum-mark { color: #987534; }
@@ -61,18 +61,23 @@
 .chat-message p { white-space: pre-wrap; }
 
 /* 하단 입력창: 칩 한 줄 + 한 줄 입력, 기록은 위로 뜨는 팝오버 */
-.chat-dock { position: relative; padding: 8px 10px 10px 14px; background: #fff; border: 1px solid #dfe6e6; border-radius: 12px; }
+.chat-dock { position: relative; padding: 8px 10px 10px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
 .dock-chips { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 6px; }
-.dock-keys { margin-left: auto; font-size: 11px; color: #96a5a8; }
-.dock-history { position: absolute; left: 0; right: 0; bottom: calc(100% + 8px); z-index: 6; max-height: 320px; padding: 12px 14px; background: #fff; border: 1px solid #dfe6e6; border-radius: 12px; box-shadow: 0 8px 28px rgba(29, 55, 64, .14); }
+.dock-keys { margin-left: auto; font-size: 11px; color: var(--text-muted); }
+.dock-history { position: absolute; left: 0; right: 0; bottom: calc(100% + 8px); z-index: 6; max-height: 320px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; box-shadow: 0 8px 28px rgba(29, 55, 64, .14); }
 .dock-row { display: flex; gap: 10px; align-items: flex-end; }
 .dock-row .textarea { min-height: 40px; max-height: 140px; flex: 1; resize: none; padding: 9px 12px; }
 .dock-row .button.primary { padding: 10px 16px; }
 
+/* 상단 우측 밝기 선택 (시스템 / 라이트 / 다크) */
+.mode-picker { display: flex; gap: 2px; padding: 2px; background: var(--surface-muted); border-radius: 7px; }
+.mode-option { border: 0; background: transparent; padding: 5px 9px; border-radius: 5px; font-size: 11px; font-weight: 800; color: var(--text-muted); }
+.mode-option.active { background: var(--surface); color: var(--text); box-shadow: 0 1px 3px rgba(29, 55, 64, .1); }
+
 /* 상단 우측 테마 선택 */
-.theme-picker { display: flex; align-items: center; gap: 6px; margin-left: 6px; padding-left: 12px; border-left: 1px solid #e6eaeb; }
+.theme-picker { display: flex; align-items: center; gap: 6px; margin-left: 6px; padding-left: 12px; border-left: 1px solid var(--border); }
 .theme-swatch { width: 18px; height: 18px; padding: 0; border: 2px solid #fff; border-radius: 50%; box-shadow: 0 0 0 1px #cfd8d9; }
-.theme-swatch.active { box-shadow: 0 0 0 2px #2b4048; }
+.theme-swatch.active { box-shadow: 0 0 0 2px var(--text); }
 
 @media (max-width: 800px) {
   .workbench { height: auto; }

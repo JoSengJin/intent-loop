@@ -1,5 +1,13 @@
+/* 밝기 모드: 배경·글자·경계선 토큰을 라이트/다크로 나눈다 (팔레트와 독립) */
+:root { --bg: #f6f8f8; --surface: #fff; --surface-muted: #f1f4f4; --border: #e5e9e9; --text: #233041; --text-soft: #506972; --text-muted: #819099; color-scheme: light; }
+:root[data-mode='dark'] { --bg: #0a0a0a; --surface: #141414; --surface-muted: #1e1e1e; --border: #2e2e2e; --text: #ececec; --text-soft: #bdbdbd; --text-muted: #8f8f8f; color-scheme: dark; }
+/* 생성된 미리보기 결과물은 앱 밝기와 무관하게 항상 라이트로 보여준다 */
+.preview-body { --bg: #f6f8f8; --surface: #fff; --surface-muted: #f1f4f4; --border: #e5e9e9; --text: #233041; --text-soft: #506972; --text-muted: #819099; }
+
 /* 사용자 맞춤 테마: 포인트 색과 사이드바 색을 변수로 교체한다 */
 :root { --accent: #d5eb5d; --accent-hover: #cce451; --accent-ink: #82a632; --accent-line: #a5c377; --accent-soft: #edf4dc; --side-bg: #142b36; --side-card: #1d3742; --side-active: #294551; }
 :root[data-theme='ocean'] { --accent: #a5d8f3; --accent-hover: #8fcbea; --accent-ink: #2f7fa6; --accent-line: #7fb9d8; --accent-soft: #e3f2fa; --side-bg: #0f2a44; --side-card: #183a5a; --side-active: #25496c; }
 :root[data-theme='violet'] { --accent: #cfc3f7; --accent-hover: #bfb0f2; --accent-ink: #6b58b8; --accent-line: #a897e0; --accent-soft: #eeeafc; --side-bg: #26213f; --side-card: #342d52; --side-active: #433a66; }
 :root[data-theme='coral'] { --accent: #f8c4a8; --accent-hover: #f3b08d; --accent-ink: #b8643a; --accent-line: #e6a07e; --accent-soft: #fcece3; --side-bg: #3a2420; --side-card: #4a302b; --side-active: #5a3d37; }
+/* 다크 모드에서는 사이드바도 무채색으로 둔다 (팔레트 블록보다 뒤에 있어야 덮어쓴다) */
+:root[data-mode='dark'] { --side-bg: #0a0a0a; --side-card: #1a1a1a; --side-active: #262626; }

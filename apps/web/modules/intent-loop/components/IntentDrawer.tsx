@@ -25,7 +25,7 @@ export default function IntentDrawer({ s, act, open, onClose }: IntentDrawerProp
           <span className="badge">개발 기준</span>
           <button className="button ghost small" onClick={onClose}>닫기</button>
         </div>
-        <IntentPane s={s} act={act} />
+        <IntentPane s={s} act={act} onApplied={onClose} />
       </aside>
     </>
   );
